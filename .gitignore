@@ -1,0 +1,12 @@
+*.dat
+*.Dat
+*.tec
+*.TEC
+*.sln
+*.vfproj
+*.htm
+*.mod
+*.obj
+*.pdbg
+debug/
+release/
