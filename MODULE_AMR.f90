@@ -28,7 +28,7 @@ MODULE MODULE_AMR
     
     ! >>> ADAPTIVE MESH [COARSER] REFINEMENT LEVEL 3 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     LEVEL = 3;  AMR_INDEX = 6; AMR_THRESHOLD = 0.7_rp
-!    call AMR_coarser_loop_on_quadtree_array(first, last, tree)
+    call AMR_coarser_loop_on_quadtree_array(first, last, tree)
     
 !    ! >>> ADAPTIVE MESH [COARSER] REFINEMENT LEVEL 2 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 !    LEVEL = 2;  AMR_INDEX = 6; AMR_THRESHOLD = 0.5_rp
@@ -90,10 +90,10 @@ MODULE MODULE_AMR
     real(rp)                                :: max_grad_nw, max_grad_ne, max_grad_sw, max_grad_se
     
     if (.not. tree%is_leaf) then 
-        call AMR_coarser_loop_on_single_quadtree(tree%north_west)    
-        call AMR_coarser_loop_on_single_quadtree(tree%north_east)    
-        call AMR_coarser_loop_on_single_quadtree(tree%south_east)    
-        call AMR_coarser_loop_on_single_quadtree(tree%south_west)
+        if (associated(tree%north_west)) call AMR_coarser_loop_on_single_quadtree(tree%north_west)    
+        if (associated(tree%north_east)) call AMR_coarser_loop_on_single_quadtree(tree%north_east)    
+        if (associated(tree%south_east)) call AMR_coarser_loop_on_single_quadtree(tree%south_east)    
+        if (associated(tree%south_west)) call AMR_coarser_loop_on_single_quadtree(tree%south_west)
 
         ! ===> CHECK CELL TO REMOVE <=============================================================
         max_grad_nw = compute_max_gradient(tree%north_west)
