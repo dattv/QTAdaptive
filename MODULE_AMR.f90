@@ -26,8 +26,8 @@ MODULE MODULE_AMR
     LEVEL = 3;  AMR_INDEX = 6; AMR_THRESHOLD = 0.7_rp
     call loop_on_quadtree_array(first, last, tree, AMR_finner_single_cell)    
     
-!    ! >>> ADAPTIVE MESH [COARSER] REFINEMENT LEVEL 3 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-!    LEVEL = 3;  AMR_INDEX = 6; AMR_THRESHOLD = 0.7_rp
+    ! >>> ADAPTIVE MESH [COARSER] REFINEMENT LEVEL 3 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    LEVEL = 3;  AMR_INDEX = 6; AMR_THRESHOLD = 0.7_rp
 !    call AMR_coarser_loop_on_quadtree_array(first, last, tree)
     
 !    ! >>> ADAPTIVE MESH [COARSER] REFINEMENT LEVEL 2 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
