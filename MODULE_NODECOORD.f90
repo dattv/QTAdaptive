@@ -23,7 +23,8 @@ MODULE MODULE_NODECOORD
     
 !========================= INTERFACE ========================
     interface assignment(=)
-        module procedure    asign_coord
+        module procedure    asign_coord     ! it should be moved to inside the nodeCoor class to enhance fully OOP Fortran2003, 
+                                            ! but I have no time to do this
     end interface
     
     contains
