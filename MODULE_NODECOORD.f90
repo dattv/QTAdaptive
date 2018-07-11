@@ -8,13 +8,16 @@ MODULE MODULE_NODECOORD
         real(rp), dimension(:), allocatable :: coord
         
     contains
-    procedure   :: new => new_nodeCoord
-    procedure   :: delete => delete_nodeCoord
+    procedure   ::          new => new_nodeCoord
+    procedure   ::       delete => delete_nodeCoord
+    
+    procedure   :: add_node
+    generic     :: operator(+) => add_node
     end type nodeCoord
     
 !========================= INTERFACE ========================
     interface assignment(=)
-    module procedure    asign_coord
+        module procedure    asign_coord
     end interface
     
     contains
@@ -49,7 +52,17 @@ MODULE MODULE_NODECOORD
     
     return
     end subroutine asign_coord
-!==================================================================================================    
+!==================================================================================================  
+    function add_node(this, node1) result(res)
+    implicit none
+    class(nodeCoord), intent(in)     :: this
+    type(nodeCoord), intent(in)     :: node1
+    type(nodeCoord)     :: res
+    
+    call res%new(node1%ndim, node1%coord)
+    res%coord(:) = this%coord(:) + node1%coord(:)
+    return
+    end function add_node
 !==================================================================================================    
 !==================================================================================================    
 !==================================================================================================    
