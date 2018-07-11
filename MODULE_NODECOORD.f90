@@ -8,8 +8,8 @@ MODULE MODULE_NODECOORD
         real(rp), dimension(:), allocatable :: coord
         
     contains
-    procedure   ::          new => new_nodeCoord
-    procedure   ::       delete => delete_nodeCoord
+    procedure   ::         new => new_nodeCoord
+    procedure   ::      delete => delete_nodeCoord
     
     procedure   :: add_node, offset_node
     generic     :: operator(+) => add_node, offset_node
