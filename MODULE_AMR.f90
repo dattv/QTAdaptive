@@ -94,53 +94,49 @@ MODULE MODULE_AMR
         if (associated(tree%north_east)) call AMR_coarser_loop_on_single_quadtree(tree%north_east)    
         if (associated(tree%south_east)) call AMR_coarser_loop_on_single_quadtree(tree%south_east)    
         if (associated(tree%south_west)) call AMR_coarser_loop_on_single_quadtree(tree%south_west)
+       
+    else
 
+        p_cell => tree%father
         ! ===> CHECK CELL TO REMOVE <=============================================================
-        max_grad_nw = compute_max_gradient(tree%north_west)
-        max_grad_ne = compute_max_gradient(tree%north_east)
-        max_grad_se = compute_max_gradient(tree%south_east)
-        max_grad_sw = compute_max_gradient(tree%south_west)
+        max_grad_nw = compute_max_gradient(p_cell%north_west)
+        max_grad_ne = compute_max_gradient(p_cell%north_east)
+        max_grad_se = compute_max_gradient(p_cell%south_east)
+        max_grad_sw = compute_max_gradient(p_cell%south_west)
         
-        if (max(max_grad_nw, max_grad_ne, max_grad_se, max_grad_sw) < AMR_THRESHOLD .and. tree%m_level == LEVEL - 1) then 
+        if (max(max_grad_nw, max_grad_ne, max_grad_se, max_grad_sw) < AMR_THRESHOLD .and. p_cell%m_level == LEVEL - 1) then 
             
             ! CHANGE ADJOINT ELEMENT OF CELL NORTH WEST <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            p_cell => tree%north_west
-            if (associated(p_cell%adj_north)) p_cell%adj_north%adj_south => p_cell%father 
-            if (associated(p_cell%adj_west))    p_cell%adj_west%adj_east => p_cell%father
+            if (associated(p_cell%north_west%adj_north)) p_cell%north_west%adj_north%adj_south => p_cell 
+            if (associated(p_cell%north_west%adj_west))    p_cell%north_west%adj_west%adj_east => p_cell
             
-            call p_cell%delete()     
+            call p_cell%north_west%delete()     
             
             ! CHANGE ADJOINT ELEMENT OF CELL NORTH EAST <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            p_cell => tree%north_east
-            if (associated(p_cell%adj_north)) p_cell%adj_north%adj_south => p_cell%father
-            if (associated(p_cell%adj_east))   p_cell%adj_east%adj_west => p_cell%father
+            if (associated(p_cell%north_east%adj_north)) p_cell%north_east%adj_north%adj_south => p_cell
+            if (associated(p_cell%north_east%adj_east))    p_cell%north_east%adj_east%adj_west => p_cell
             
-            call p_cell%delete()        
+            call p_cell%north_east%delete()        
             
             ! CHANGE ADJOINT ELEMENT OF CELL SOUTH WEST <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            p_cell => tree%south_east
-            if (associated(p_cell%adj_east))    p_cell%adj_east%adj_west => p_cell%father
-            if (associated(p_cell%adj_south)) p_cell%adj_south%adj_north => p_cell%father
+            if (associated(p_cell%south_west%adj_east))    p_cell%south_west%adj_east%adj_west => p_cell
+            if (associated(p_cell%south_west%adj_south)) p_cell%south_west%adj_south%adj_north => p_cell
             
-            call p_cell%delete() 
+            call p_cell%south_west%delete() 
             
             ! CHANGE ADJOINT ELEMENT OF CELL SOUTH EAST <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            p_cell => tree%south_east
-            if (associated(p_cell%adj_south)) p_cell%adj_south%adj_north => p_cell%father
-            if (associated(p_cell%adj_west)) p_cell%adj_west%adj_east => p_cell%father
+            if (associated(p_cell%south_east%adj_south)) p_cell%south_east%adj_south%adj_north => p_cell
+            if (associated(p_cell%south_east%adj_west))    p_cell%south_east%adj_west%adj_east => p_cell
             
-            call p_cell%delete() 
+            call p_cell%south_east%delete() 
             
-            deallocate(tree%north_west)
-            deallocate(tree%north_east)
-            deallocate(tree%south_east)
-            deallocate(tree%south_west)
+            deallocate(p_cell%north_west)
+            deallocate(p_cell%north_east)
+            deallocate(p_cell%south_east)
+            deallocate(p_cell%south_west)
                       
-        end if        
-        else
-            return
-            
-        end if
+        end if       
+    end if
     
     return
     end subroutine AMR_coarser_loop_on_single_quadtree
