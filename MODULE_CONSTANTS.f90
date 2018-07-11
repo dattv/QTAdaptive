@@ -26,17 +26,26 @@ MODULE MODULE_CONSTANTS
     public  :: MPI
     public  :: UNDERFINED_VALUE
     
-    real(rp), parameter :: zero = 0._rp, &
-                            one = 1._rp, &
-                            two = 2._rp, &
-                          three = 3._rp, &
-                           four = 4._rp, &
-                           five = 5._rp, &
-                            six = 6._rp, &
-                          seven = 7._rp, &
-                          eight = 8._rp, &
-                           nine = 9._rp, &
-                           half = 0.5_rp
+    real(rp), parameter :: zero = 0._rp         , &
+                            one = 1._rp         , &
+                            two = 2._rp         , &
+                          three = 3._rp         , &
+                           four = 4._rp         , &
+                           five = 5._rp         , &
+                            six = 6._rp         , &
+                          seven = 7._rp         , &
+                          eight = 8._rp         , &
+                           nine = 9._rp         , &
+                           half = 0.5_rp        , &
+                          third = 1.0_rp/ 3.0_rp, &
+                         fourth = 1.0_rp/ 4.0_rp, &
+                          fifth = 1.0_rp/ 5.0_rp, &
+                          sixth = 1.0_rp/ 6.0_rp, &
+                      two_third = 2.0_rp/ 3.0_rp, &
+                     four_third = 4.0_rp/ 3.0_rp, &
+                   three_fourth = 3.0_rp/ 4.0_rp, &
+                        twelfth = 1.0_rp/12.0_rp, &
+               one_twentyfourth = 1.0_rp/24.0_rp
     
     real(rp), parameter     ::              MPI = four*atan(one)
     integer(ip), parameter  :: UNDERFINED_VALUE = -9999   
