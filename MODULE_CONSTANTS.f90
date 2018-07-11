@@ -21,7 +21,16 @@ MODULE MODULE_CONSTANTS
                 seven   , &
                 eight   , &
                 nine    , &
-                half
+                half    , &
+               third    , &
+              fourth    , & 
+               fifth    , & 
+               sixth    , & 
+           two_third    , & 
+          four_third    , & 
+        three_fourth    , & 
+             twelfth    , & 
+    one_twentyfourth     
     
     public  :: MPI
     public  :: UNDERFINED_VALUE
