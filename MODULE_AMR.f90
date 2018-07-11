@@ -130,8 +130,8 @@ MODULE MODULE_AMR
             
             if (associated(p_cell%north_east%adj_east))    p_cell%north_east%adj_east%adj_west => p_cell
             if (.not. p_cell%north_east%adj_east%is_leaf) then
-                p_cell%north_east%adj_east%north_west%adj_west => p_cell        
-                p_cell%north_east%adj_east%south_west%adj_west => p_cell        
+                      p_cell%north_east%adj_east%north_west%adj_west => p_cell        
+                      p_cell%north_east%adj_east%south_west%adj_west => p_cell        
             end if
             
             call p_cell%north_east%delete()        
@@ -145,8 +145,8 @@ MODULE MODULE_AMR
             
             if (associated(p_cell%south_west%adj_south)) p_cell%south_west%adj_south%adj_north => p_cell
             if (.not. p_cell%south_west%adj_south%is_leaf) then
-                p_cell%south_west%adj_south%north_west%adj_north => p_cell   
-                p_cell%south_west%adj_south%north_east%adj_north => p_cell   
+                      p_cell%south_west%adj_south%north_west%adj_north => p_cell   
+                      p_cell%south_west%adj_south%north_east%adj_north => p_cell   
             end if
             
             call p_cell%south_west%delete() 
@@ -158,10 +158,10 @@ MODULE MODULE_AMR
                 p_cell%south_east%adj_south%north_west%adj_north => p_cell  
             end if
             
-            if (associated(p_cell%south_east%adj_west))    p_cell%south_east%adj_west%adj_east => p_cell
-            if (.not. p_cell%south_east%adj_west%is_leaf) then 
-                p_cell%south_east%adj_west%north_west%adj_west => p_cell      
-                p_cell%south_east%adj_west%south_west%adj_west => p_cell      
+            if (associated(p_cell%south_east%adj_east))    p_cell%south_east%adj_east%adj_west => p_cell
+            if (.not. p_cell%south_east%adj_east%is_leaf) then 
+                p_cell%south_east%adj_east%north_west%adj_west => p_cell      
+                p_cell%south_east%adj_east%south_west%adj_west => p_cell      
             end if
  
             call p_cell%south_east%delete() 
@@ -170,7 +170,7 @@ MODULE MODULE_AMR
             deallocate(p_cell%north_east)
             deallocate(p_cell%south_east)
             deallocate(p_cell%south_west)
-                      
+            continue          
         end if       
     end if
     
