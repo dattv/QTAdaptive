@@ -16,6 +16,9 @@ MODULE MODULE_NODECOORD
     
     procedure   :: subtract_node
     generic     :: operator(-) => subtract_node
+    
+    procedure   :: scalar_product, vector_dot_product
+    generic     :: operator(*) => scalar_product , vector_dot_product
     end type nodeCoord
     
 !========================= INTERFACE ========================
@@ -87,7 +90,34 @@ MODULE MODULE_NODECOORD
     res%coord(:) = this%Coord(:) - node%coord(:)
     return
     end function subtract_node
-!==================================================================================================    
-!==================================================================================================    
+!==================================================================================================
+    function scalar_product(this, val) result(res)
+    implicit none
+    class(nodeCoord), intent(in)    :: this
+    real(rp), intent(in)            :: val
+    type(nodeCoord)                 :: res
+    
+    call res%new(this%ndim, this%coord)
+    res%coord(:) = this%coord(:)*val
+    return
+    end function scalar_product
+!==================================================================================================  
+    function vector_dot_product(this, vec) result(res)
+    implicit none
+    class(nodeCoord), intent(in)    :: this
+    type(nodeCoord), intent(in)     :: vec
+    real(rp)                        :: res
+    integer(ip)                     :: i
+    
+    res = zero
+    do i = 1, this%ndim
+        res = res + this%coord(i)*vec%coord(i)
+    end do
+    return
+    end function vector_dot_product
+!==================================================================================================  
+!==================================================================================================  
+!==================================================================================================  
+    
     
 END MODULE MODULE_NODECOORD    
