@@ -2,9 +2,9 @@
 !> CARTESIAN QUADTREE ADAPTIVE MESH REFINEMENT LIBRARY
 !> AUTHOR: VAN-DAT THANG
 !> E-MAIL: datthangva@gmail.com
-!> E-MAIL: vandatthang@gamil.com
+!> E-MAIL: vandatthang@gmail.com
 !> SOURCE CODE LINK: https://github.com/dattv/QTAdaptive
-!================================================================================================= 
+!=================================================================================================  
 MODULE MODULE_OUTPUT
     
     use MODULE_PRECISION
@@ -37,10 +37,10 @@ MODULE MODULE_OUTPUT
     end do
     
     ! GET DATA <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    NQ = tree(1)%nq
+    NQ = tree(1)%data%nq
     allocate(temp_node(2,count_node))
     allocate(temp_elm(4,count_elm))
-    allocate(temp_cfd_data(tree(1)%nq,count_elm))
+    allocate(temp_cfd_data(tree(1)%data%nq,count_elm))
     count_node = 1
      count_elm = 1
     do i = 1, nelm
@@ -104,7 +104,7 @@ MODULE MODULE_OUTPUT
         ! WRITE SOLUTION <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         do k = 1, NQ
             do i = 1, nelm 
-                write(iUnit, 20     ) tree(i)%w(k)
+                write(iUnit, 20     ) tree(i)%data%w(k)
             end do
         end do        
         ! WRITE ELEMENT CONNECTIVIEY <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -185,7 +185,7 @@ MODULE MODULE_OUTPUT
         elm(3,count_elm) = count_node + 2
         elm(4,count_elm) = count_node + 3
         
-        cfd_data(:,count_elm) = tree%w(:)
+        cfd_data(:,count_elm) = tree%data%w(:)
         count_node = count_node + 4
          count_elm = count_elm + 1
         

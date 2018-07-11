@@ -2,9 +2,9 @@
 !> CARTESIAN QUADTREE ADAPTIVE MESH REFINEMENT LIBRARY
 !> AUTHOR: VAN-DAT THANG
 !> E-MAIL: datthangva@gmail.com
-!> E-MAIL: vandatthang@gamil.com
+!> E-MAIL: vandatthang@gmail.com
 !> SOURCE CODE LINK: https://github.com/dattv/QTAdaptive
-!=================================================================================================    
+!=================================================================================================   
 MODULE MODULE_AMR
     use MODULE_PRECISION
     use MODULE_CONSTANTS
@@ -267,32 +267,32 @@ MODULE MODULE_AMR
     
     ! COMPUTE GRADIENT OF CELL
     if (associated(tree%adj_north)) then 
-        grad_n = abs(tree%w(AMR_INDEX) - tree%adj_north%w(AMR_INDEX)   )
+        grad_n = abs(tree%data%w(AMR_INDEX) - tree%adj_north%data%w(AMR_INDEX)   )
     else
         grad_n = zero
     end if
     
     if (associated(tree%adj_west)) then 
-        grad_w = abs(tree%w(AMR_INDEX) - tree%adj_west%w(AMR_INDEX)    )
+        grad_w = abs(tree%data%w(AMR_INDEX) - tree%adj_west%data%w(AMR_INDEX)    )
     else
         grad_w = zero
     end if
     
     if (associated(tree%adj_south)) then 
-        grad_s = abs(tree%w(AMR_INDEX) - tree%adj_south%w(AMR_INDEX)   )
+        grad_s = abs(tree%data%w(AMR_INDEX) - tree%adj_south%data%w(AMR_INDEX)   )
     else
         grad_s = zero
     end if
     
     if (associated(tree%adj_east)) then 
-        grad_e = abs(tree%w(AMR_INDEX) - tree%adj_east%w(AMR_INDEX)    )
+        grad_e = abs(tree%data%w(AMR_INDEX) - tree%adj_east%data%w(AMR_INDEX)    )
     else
         grad_e = zero
     end if
     
     if (associated(tree%adj_north)) then 
         if (associated(tree%adj_north%adj_west)) then 
-            grad_nw = abs(tree%w(AMR_INDEX)  - tree%adj_north%adj_west%w(AMR_INDEX))
+            grad_nw = abs(tree%data%w(AMR_INDEX)  - tree%adj_north%adj_west%data%w(AMR_INDEX))
         else
             grad_nw = zero
         end if
@@ -302,7 +302,7 @@ MODULE MODULE_AMR
     
     if (associated(tree%adj_north)) then 
         if (associated(tree%adj_north%adj_east)) then 
-            grad_ne = abs(tree%w(AMR_INDEX)  - tree%adj_north%adj_east%w(AMR_INDEX))
+            grad_ne = abs(tree%data%w(AMR_INDEX)  - tree%adj_north%adj_east%data%w(AMR_INDEX))
         else
             grad_ne = zero
         end if
@@ -312,7 +312,7 @@ MODULE MODULE_AMR
     
     if (associated(tree%adj_south)) then 
         if (associated(tree%adj_south%adj_east)) then 
-            grad_se = abs(tree%w(AMR_INDEX)  - tree%adj_south%adj_east%w(AMR_INDEX))
+            grad_se = abs(tree%data%w(AMR_INDEX)  - tree%adj_south%adj_east%data%w(AMR_INDEX))
         else 
             grad_se = zero
         end if
@@ -322,7 +322,7 @@ MODULE MODULE_AMR
     
     if (associated(tree%adj_south)) then 
         if (associated(tree%adj_south%adj_west)) then 
-            grad_sw = abs(tree%w(AMR_INDEX)  - tree%adj_south%adj_west%w(AMR_INDEX))
+            grad_sw = abs(tree%data%w(AMR_INDEX)  - tree%adj_south%adj_west%data%w(AMR_INDEX))
         else
             grad_sw = zero
         end if

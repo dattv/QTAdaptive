@@ -2,7 +2,7 @@
 !> CARTESIAN QUADTREE ADAPTIVE MESH REFINEMENT LIBRARY
 !> AUTHOR: VAN-DAT THANG
 !> E-MAIL: datthangva@gmail.com
-!> E-MAIL: vandatthang@gamil.com
+!> E-MAIL: vandatthang@gmail.com
 !> SOURCE CODE LINK: https://github.com/dattv/QTAdaptive
 !================================================================================================= 
 MODULE MODULE_CONSTANTS

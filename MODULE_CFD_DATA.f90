@@ -84,7 +84,7 @@
     end if
     
     if (.not. allocated(this%res)) then 
-        allocate(this%u(NQ))
+        allocate(this%res(NQ))
     else
         temp_NQ = sizeof(this%res)
         if (temp_NQ /= NQ) then 

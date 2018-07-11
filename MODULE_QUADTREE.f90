@@ -2,7 +2,7 @@
 !> CARTESIAN QUADTREE ADAPTIVE MESH REFINEMENT LIBRARY
 !> AUTHOR: VAN-DAT THANG
 !> E-MAIL: datthangva@gmail.com
-!> E-MAIL: vandatthang@gamil.com
+!> E-MAIL: vandatthang@gmail.com
 !> SOURCE CODE LINK: https://github.com/dattv/QTAdaptive
 !================================================================================================= 
 MODULE MODULE_QUADTREE  
@@ -10,6 +10,7 @@ MODULE MODULE_QUADTREE
     use MODULE_PRECISION
     use MODULE_CONSTANTS
     use MODULE_NODECOORD
+    use MODULE_CFD_DATA
     
     type :: quadtree
     	integer(ip) :: index
@@ -23,10 +24,7 @@ MODULE MODULE_QUADTREE
         type(quadtree), pointer :: adj_north
         type(quadtree), pointer :: adj_south
         
-        integer(ip) :: nq
-        real(rp), dimension(:), allocatable  :: u
-        real(rp), dimension(:), allocatable  :: w
-        real(rp), dimension(:), allocatable  :: res
+        type(cfd_data)  :: data
         
         reaL(rp)    :: vol
         
@@ -56,7 +54,7 @@ MODULE MODULE_QUADTREE
     integer(ip)                                 :: i
     
     ! body
-    this%index = index
+      this%index = index
     this%m_level = m_level
     this%halfDim = halfDim
     
@@ -64,14 +62,7 @@ MODULE MODULE_QUADTREE
         this%pts(i) = points(i)
     end do
     
-    this%nq = nq
-    if (.not. allocated(this%u)) allocate(this%u(nq))
-    if (.not. allocated(this%w)) allocate(this%w(nq))
-    if (.not. allocated(this%res)) allocate(this%res(nq))
-    
-      this%u(:) = zero
-      this%w(:) = zero
-    this%res(:) = zero
+    call this%data%new(nq)
     
     this%is_leaf = .true.
     return
@@ -85,10 +76,8 @@ MODULE MODULE_QUADTREE
     do i = 1, 5
         call this%pts(i)%delete()
     end do
-    
-    if (allocated(this%u)) deallocate(this%u)
-    if (allocated(this%w)) deallocate(this%w)
-    if (allocated(this%res)) deallocate(this%res)
+
+    call this%data%delete()
     
     this%is_leaf = .false.
 
@@ -142,11 +131,9 @@ MODULE MODULE_QUADTREE
     points(4)%coord(1) = this%pts(1)%coord(1)
     points(4)%coord(2) = this%pts(5)%coord(2) 
     
-    call child_NW%new(0, this%m_level+1, halfDim, points, this%nq) 
+    call child_NW%new(0, this%m_level+1, halfDim, points, this%data%nq) 
     
-      child_NW%u = this%u
-      child_NW%w = this%w
-    child_NW%res = this%res
+    child_NW%data = this%data
     
     ! >> SET ELEMENT ADJOINT OF CELL NORTH WEST <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     if (associated(this%adj_north)) then 
@@ -190,11 +177,9 @@ MODULE MODULE_QUADTREE
     points(4)%coord(1) = this%pts(5)%coord(1)
     points(4)%coord(2) = this%pts(5)%coord(2)
     
-    call child_NE%new(0, this%m_level+1, halfDim, points, this%nq)
-    
-      child_NE%u = this%u
-      child_NE%w = this%w
-    child_NE%res = this%res
+    call child_NE%new(0, this%m_level+1, halfDim, points, this%data%nq)
+
+    child_NE%data = this%data
     
     ! >> SET ELEMENT ADJOINT OF CELL NORTH EAST <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     if (associated(this%adj_north)) then 
@@ -235,11 +220,9 @@ MODULE MODULE_QUADTREE
     points(4)%coord(1) = this%pts(5)%coord(1)
     points(4)%coord(2) = points(5)%coord(2) - halfDim
     
-    call child_SE%new(0, this%m_level+1, halfDim, points, this%nq)
+    call child_SE%new(0, this%m_level+1, halfDim, points, this%data%nq)
     
-      child_SE%u = this%u
-      child_SE%w = this%w
-    child_SE%res = this%res
+    child_SE%data = this%data
     
     ! >> SET ELEMENT ADJOINT OF CELL SOUTH EAST <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     child_SE%adj_north => child_NE
@@ -280,11 +263,9 @@ MODULE MODULE_QUADTREE
     points(4)%coord(1) = this%pts(4)%coord(1)
     points(4)%coord(2) = this%pts(4)%coord(2)
     
-    call child_SW%new(0, this%m_level+1, halfDim, points, this%nq)
-    
-      child_SW%u = this%u
-      child_SW%w = this%w
-    child_SW%res = this%res
+    call child_SW%new(0, this%m_level+1, halfDim, points, this%data%nq)
+
+    child_SW%data = this%data
     
     ! >> SET ELEMENT ADJOINT OF CELL SOUTH WEST <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 
     child_SW%adj_north => child_NW
@@ -350,9 +331,12 @@ MODULE MODULE_QUADTREE
         call update_back_single_cell(tree%south_east)
         call update_back_single_cell(tree%south_west)
         
-          tree%u = (tree%north_west%u   + tree%north_east%u   + tree%south_east%u   + tree%south_west%u  )/four
-          tree%w = (tree%north_west%w   + tree%north_east%w   + tree%south_east%w   + tree%south_west%w  )/four
-        tree%res = (tree%north_west%res + tree%north_east%res + tree%south_east%res + tree%south_west%res)/four
+            tree%data%u = (tree%north_west%data%u     + tree%north_east%data%u     + tree%south_east%data%u     + tree%south_west%data%u        )/four
+        tree%data%u_old = (tree%north_west%data%u_old + tree%north_east%data%u_old + tree%south_east%data%u_old + tree%south_west%data%u_old    )/four
+        tree%data%u_new = (tree%north_west%data%u_new + tree%north_east%data%u_new + tree%south_east%data%u_new + tree%south_west%data%u_new    )/four
+            tree%data%w = (tree%north_west%data%w     + tree%north_east%data%w     + tree%south_east%data%w     + tree%south_west%data%w        )/four
+          tree%data%res = (tree%north_west%data%res   + tree%north_east%data%res   + tree%south_east%data%res   + tree%south_west%data%res      )/four
+          tree%data%wsn = (tree%north_west%data%wsn   + tree%north_east%data%wsn   + tree%south_east%data%wsn   + tree%south_west%data%wsn      )/four
     else
         return
     end if

@@ -2,7 +2,7 @@
 !> CARTESIAN QUADTREE ADAPTIVE MESH REFINEMENT LIBRARY
 !> AUTHOR: VAN-DAT THANG
 !> E-MAIL: datthangva@gmail.com
-!> E-MAIL: vandatthang@gamil.com
+!> E-MAIL: vandatthang@gmail.com
 !> SOURCE CODE LINK: https://github.com/dattv/QTAdaptive
 !================================================================================================= 
 MODULE  MODULE_INITIALCONDITION
@@ -33,11 +33,11 @@ MODULE  MODULE_INITIALCONDITION
     type(quadtree), pointer, intent(inout) :: tree
     
     if (tree%pts(5)%coord(1) >= half .and. tree%pts(5)%coord(2) <= half) then 
-        tree%u(:) = one
-        tree%w(:) = one
+        tree%data%u(:) = one
+        tree%data%w(:) = one
     else
-        tree%u(:) = zero
-        tree%w(:) = zero
+        tree%data%u(:) = zero
+        tree%data%w(:) = zero
     endif
 
     return
@@ -48,11 +48,11 @@ MODULE  MODULE_INITIALCONDITION
     type(quadtree), pointer, intent(inout) :: tree
     
     if (tree%pts(5)%coord(1) >= half ) then 
-        tree%u(:) = one
-        tree%w(:) = one
+        tree%data%u(:) = one
+        tree%data%w(:) = one
     else
-        tree%u(:) = zero
-        tree%w(:) = zero
+        tree%data%u(:) = zero
+        tree%data%w(:) = zero
     endif
 
     return
@@ -63,11 +63,11 @@ MODULE  MODULE_INITIALCONDITION
     type(quadtree), pointer, intent(inout) :: tree
     
     if (tree%pts(5)%coord(1) >= 0.7_rp) then 
-        tree%u(:) = one
-        tree%w(:) = one
+        tree%data%u(:) = one
+        tree%data%w(:) = one
     else
-        tree%u(:) = zero
-        tree%w(:) = zero
+        tree%data%u(:) = zero
+        tree%data%w(:) = zero
     endif
 
     return
