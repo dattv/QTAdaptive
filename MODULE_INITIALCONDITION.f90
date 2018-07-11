@@ -40,8 +40,7 @@ MODULE  MODULE_INITIALCONDITION
     implicit none
     type(quadtree), pointer, intent(inout) :: tree
     
-    if (tree%pts(5)%coord(1) >= 0.3 .and. tree%pts(5)%coord(1) <= 0.7 .and. &
-        tree%pts(5)%coord(2) >= 0.3 .and. tree%pts(5)%coord(2) <= 0.7           ) then 
+    if (tree%pts(5)%coord(1) >= half ) then 
         tree%u(:) = one
         tree%w(:) = one
     else
@@ -56,8 +55,7 @@ MODULE  MODULE_INITIALCONDITION
     implicit none
     type(quadtree), pointer, intent(inout) :: tree
     
-    if (tree%pts(5)%coord(1) >= 0.35 .and. tree%pts(5)%coord(1) <= 0.75 .and. &
-        tree%pts(5)%coord(2) >= 0.35 .and. tree%pts(5)%coord(2) <= 0.75           ) then 
+    if (tree%pts(5)%coord(1) >= 0.7_rp) then 
         tree%u(:) = one
         tree%w(:) = one
     else
