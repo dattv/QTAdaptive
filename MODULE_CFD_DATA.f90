@@ -10,6 +10,13 @@
         use MODULE_PRECISION
         use MODULE_CONSTANTS
         
+        type :: reconstruction_data
+        	real(rp)    :: x_l
+        	real(rp)    :: x_r
+        	real(rp)    :: y_l
+        	real(rp)    :: y_r
+        end type reconstruction_data
+        
         type :: cfd_data
             integer(ip)                         :: NQ       ! total equations
         	real(rp), dimension(:), allocatable :: u        ! conservative variables
@@ -18,6 +25,9 @@
         	real(rp), dimension(:), allocatable :: u_new    ! conservative variables
         	real(rp), dimension(:), allocatable :: res      ! residual
         	real(rp)                            :: wsn      ! wave speed
+            
+            ! ===> reconstruction data <=====================================
+            type(reconstruction_data), dimension(:), allocatable    :: recons
             
         contains
         procedure   ::    new => new_cfd_data
@@ -91,7 +101,17 @@
             deallocate(this%res)
             allocate(this%res(NQ))
         end if
-    end if    
+    end if
+    
+    if (.not. allocated(this%recons)) then 
+        allocate(this%recons(NQ))
+    else
+        temp_NQ = sizeof(this%recons)
+        if (temp_NQ /= NQ) then 
+            deallocate(this%recons)
+            allocate(this%recons(NQ))
+        end if
+    end if     
     
     this%u     = zero
     this%w     = zero
@@ -99,6 +119,11 @@
     this%u_new = zero
     this%res   = zero
     this%wsn   = zero
+    
+    this%recons%x_l = zero   
+    this%recons%x_r = zero   
+    this%recons%y_l = zero   
+    this%recons%y_r = zero   
     return
     end subroutine new_cfd_data
 !================================================================================================= 
@@ -107,11 +132,12 @@
     class(cfd_data), intent(inout)  :: this
     
     ! body
-    if (allocated(this%u    )) deallocate(this%u    )  ! conservative variables
-    if (allocated(this%w    )) deallocate(this%w    )  ! primative variables
-    if (allocated(this%u_old)) deallocate(this%u_old)  ! conservative variables
-    if (allocated(this%u_new)) deallocate(this%u_new)  ! conservative variables
-    if (allocated(this%res  )) deallocate(this%res  )  ! residual    
+    if (allocated(this%u     )) deallocate(this%u     )  ! conservative variables
+    if (allocated(this%w     )) deallocate(this%w     )  ! primative variables
+    if (allocated(this%u_old )) deallocate(this%u_old )  ! conservative variables
+    if (allocated(this%u_new )) deallocate(this%u_new )  ! conservative variables
+    if (allocated(this%res   )) deallocate(this%res   )  ! residual  
+    if (allocated(this%recons)) deallocate(this%recons)
     return
     end subroutine delete_cfd_data
 !=================================================================================================
@@ -130,6 +156,11 @@
     out_cfd_data%u_new  = in_cfd_data%u_new    ! conservative variables
     out_cfd_data%res    = in_cfd_data%res      ! residual
     out_cfd_data%wsn    = in_cfd_data%wsn      ! wave speed
+    
+    out_cfd_data%recons%x_l = in_cfd_data%recons%x_l
+    out_cfd_data%recons%x_r = in_cfd_data%recons%x_r
+    out_cfd_data%recons%y_l = in_cfd_data%recons%y_l
+    out_cfd_data%recons%y_r = in_cfd_data%recons%y_r
     return
     end subroutine  asign_cfd
 !=================================================================================================  
@@ -149,6 +180,11 @@
     res%u_new  = this%u_new + in_cfd_data%u_new    ! conservative variables
     res%res    = this%res   + in_cfd_data%res      ! residual
     res%wsn    = this%wsn   + in_cfd_data%wsn      ! wave speed
+    
+    res%recons%x_l = this%recons%x_l + in_cfd_data%recons%x_l
+    res%recons%x_r = this%recons%x_r + in_cfd_data%recons%x_r
+    res%recons%y_l = this%recons%y_l + in_cfd_data%recons%y_l
+    res%recons%y_r = this%recons%y_r + in_cfd_data%recons%y_r
     
     return
     end function add_cfd_data
