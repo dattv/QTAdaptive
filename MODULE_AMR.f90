@@ -96,7 +96,7 @@ MODULE MODULE_AMR
         if (associated(tree%south_west)) call AMR_coarser_loop_on_single_quadtree(tree%south_west)
        
     else
-
+        if (.not. associated(tree%father)) return
         p_cell => tree%father
         ! ===> CHECK CELL TO REMOVE <=============================================================
         max_grad_nw = compute_max_gradient(p_cell%north_west)
