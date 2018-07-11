@@ -108,26 +108,62 @@ MODULE MODULE_AMR
             
             ! CHANGE ADJOINT ELEMENT OF CELL NORTH WEST <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             if (associated(p_cell%north_west%adj_north)) p_cell%north_west%adj_north%adj_south => p_cell 
+            if (.not. p_cell%north_west%adj_north%is_leaf) then 
+                p_cell%north_west%adj_north%south_west%adj_south => p_cell
+                p_cell%north_west%adj_north%south_east%adj_south => p_cell
+            end if
+            
             if (associated(p_cell%north_west%adj_west))    p_cell%north_west%adj_west%adj_east => p_cell
+            if (.not. p_cell%north_west%adj_west%is_leaf) then 
+                p_cell%north_west%adj_west%north_east%adj_east => p_cell
+                p_cell%north_west%adj_west%south_east%adj_east => p_cell
+            end if
             
             call p_cell%north_west%delete()     
             
             ! CHANGE ADJOINT ELEMENT OF CELL NORTH EAST <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             if (associated(p_cell%north_east%adj_north)) p_cell%north_east%adj_north%adj_south => p_cell
+            if (.not. p_cell%north_east%adj_north%is_leaf) then 
+                p_cell%north_east%adj_north%south_west%adj_south => p_cell                
+                p_cell%north_east%adj_north%south_east%adj_south => p_cell                
+            end if
+            
             if (associated(p_cell%north_east%adj_east))    p_cell%north_east%adj_east%adj_west => p_cell
+            if (.not. p_cell%north_east%adj_east%is_leaf) then
+                p_cell%north_east%adj_east%north_west%adj_west => p_cell        
+                p_cell%north_east%adj_east%south_west%adj_west => p_cell        
+            end if
             
             call p_cell%north_east%delete()        
             
             ! CHANGE ADJOINT ELEMENT OF CELL SOUTH WEST <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            if (associated(p_cell%south_west%adj_east))    p_cell%south_west%adj_east%adj_west => p_cell
+            if (associated(p_cell%south_west%adj_west))    p_cell%south_west%adj_west%adj_east => p_cell
+            if (.not. p_cell%south_west%adj_west%is_leaf) then
+                p_cell%south_west%adj_west%north_east%adj_east => p_cell      
+                p_cell%south_west%adj_west%south_east%adj_east => p_cell      
+            end if
+            
             if (associated(p_cell%south_west%adj_south)) p_cell%south_west%adj_south%adj_north => p_cell
+            if (.not. p_cell%south_west%adj_south%is_leaf) then
+                p_cell%south_west%adj_south%north_west%adj_north => p_cell   
+                p_cell%south_west%adj_south%north_east%adj_north => p_cell   
+            end if
             
             call p_cell%south_west%delete() 
             
             ! CHANGE ADJOINT ELEMENT OF CELL SOUTH EAST <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             if (associated(p_cell%south_east%adj_south)) p_cell%south_east%adj_south%adj_north => p_cell
-            if (associated(p_cell%south_east%adj_west))    p_cell%south_east%adj_west%adj_east => p_cell
+            if (.not. p_cell%south_east%adj_south%is_leaf) then 
+                p_cell%south_east%adj_south%north_east%adj_north => p_cell  
+                p_cell%south_east%adj_south%north_west%adj_north => p_cell  
+            end if
             
+            if (associated(p_cell%south_east%adj_west))    p_cell%south_east%adj_west%adj_east => p_cell
+            if (.not. p_cell%south_east%adj_west%is_leaf) then 
+                p_cell%south_east%adj_west%north_west%adj_west => p_cell      
+                p_cell%south_east%adj_west%south_west%adj_west => p_cell      
+            end if
+ 
             call p_cell%south_east%delete() 
             
             deallocate(p_cell%north_west)
