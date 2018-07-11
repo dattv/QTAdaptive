@@ -12,7 +12,10 @@ MODULE MODULE_NODECOORD
     procedure   ::       delete => delete_nodeCoord
     
     procedure   :: add_node, offset_node
-    generic     :: operator(+) => add_node
+    generic     :: operator(+) => add_node, offset_node
+    
+    procedure   :: subtract_node
+    generic     :: operator(-) => subtract_node
     end type nodeCoord
     
 !========================= INTERFACE ========================
@@ -65,14 +68,25 @@ MODULE MODULE_NODECOORD
     end function add_node
 !==================================================================================================
     function offset_node(this, val) result(res)
-    class(nodeCoord), intent(in)     :: this
-    type(nodeCoord)     :: res
+    class(nodeCoord), intent(in)    :: this
+    real(rp), intent(in)            :: val
+    type(nodeCoord)                 :: res
     
     call res%new(this%ndim, this%coord)
     res%coord(:) = this%coord(:) + val
     return
     end function offset_node
-!==================================================================================================    
+!==================================================================================================  
+    function subtract_node(this, node) result(res)
+    implicit none
+    class(nodeCoord), intent(in)    :: this
+    type(nodeCoord), intent(in)     :: node
+    type(nodeCoord)                 :: res
+    
+    call res%new(node%ndim, node%coord)
+    res%coord(:) = this%Coord(:) - node%coord(:)
+    return
+    end function subtract_node
 !==================================================================================================    
 !==================================================================================================    
     
