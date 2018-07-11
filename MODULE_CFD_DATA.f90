@@ -93,6 +93,12 @@
         end if
     end if    
     
+    this%u     = zero
+    this%w     = zero
+    this%u_old = zero
+    this%u_new = zero
+    this%res   = zero
+    this%wsn   = zero
     return
     end subroutine new_cfd_data
 !================================================================================================= 
