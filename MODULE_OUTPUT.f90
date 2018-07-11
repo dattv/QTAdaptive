@@ -25,11 +25,7 @@ MODULE MODULE_OUTPUT
     ! COUNT TOTAL NODE AND TOTAL ELEMENT OF GRID SYSTEM <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
      count_elm = 0
     count_node = 0
-    do i = 1, nelm
-        if (i == 100) then 
-            continue
-        end if
-        
+    do i = 1, nelm 
         call count_quadtree(tree(i), count_elm, count_node)
     end do
     
