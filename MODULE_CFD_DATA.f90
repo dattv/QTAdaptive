@@ -23,6 +23,9 @@
         procedure   ::    new => new_cfd_data
         procedure   :: delete => delete_cfd_data
         
+        procedure   :: add_cfd_data
+        generic     :: operator (+) => add_cfd_data
+        
         end type cfd_data
 
 !=================== INTERFACE =====================
@@ -111,6 +114,7 @@
     type(cfd_data), intent(out)  :: out_cfd_data
     type(cfd_data), intent(in)   :: in_cfd_data
     
+    ! body
     call out_cfd_data%new(in_cfd_data%NQ)
     
     out_cfd_data%NQ     = in_cfd_data%NQ       ! total equations
@@ -123,6 +127,25 @@
     return
     end subroutine  asign_cfd
 !=================================================================================================  
+    function add_cfd_data(this, in_cfd_data) result(res)
+    implicit none
+    class(cfd_data), intent(in) :: this
+    type(cfd_data), intent(in)  :: in_cfd_data
+    type(cfd_data)              :: res
+    
+    call res%new(in_cfd_data%NQ)
+    
+    res%NQ     = in_cfd_data%NQ       ! total equations
+    
+    res%u      = this%u     + in_cfd_data%u        ! conservative variables
+    res%w      = this%w     + in_cfd_data%w        ! primative variables
+    res%u_old  = this%u_old + in_cfd_data%u_old    ! conservative variables
+    res%u_new  = this%u_new + in_cfd_data%u_new    ! conservative variables
+    res%res    = this%res   + in_cfd_data%res      ! residual
+    res%wsn    = this%wsn   + in_cfd_data%wsn      ! wave speed
+    
+    return
+    end function add_cfd_data
 !=================================================================================================  
 !=================================================================================================  
 !=================================================================================================  
