@@ -170,6 +170,7 @@ MODULE MODULE_AMR
             deallocate(p_cell%north_east)
             deallocate(p_cell%south_east)
             deallocate(p_cell%south_west)
+            p_cell%is_leaf = .true.
             continue          
         end if       
     end if
