@@ -11,7 +11,7 @@ MODULE MODULE_NODECOORD
     procedure   ::          new => new_nodeCoord
     procedure   ::       delete => delete_nodeCoord
     
-    procedure   :: add_node
+    procedure   :: add_node, offset_node
     generic     :: operator(+) => add_node
     end type nodeCoord
     
@@ -63,7 +63,15 @@ MODULE MODULE_NODECOORD
     res%coord(:) = this%coord(:) + node1%coord(:)
     return
     end function add_node
-!==================================================================================================    
+!==================================================================================================
+    function offset_node(this, val) result(res)
+    class(nodeCoord), intent(in)     :: this
+    type(nodeCoord)     :: res
+    
+    call res%new(this%ndim, this%coord)
+    res%coord(:) = this%coord(:) + val
+    return
+    end function offset_node
 !==================================================================================================    
 !==================================================================================================    
 !==================================================================================================    
