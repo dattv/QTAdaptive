@@ -30,13 +30,13 @@ MODULE MODULE_AMR
     LEVEL = 3;  AMR_INDEX = 6; AMR_THRESHOLD = 0.7_rp
     call AMR_coarser_loop_on_quadtree_array(first, last, tree)
     
-!    ! >>> ADAPTIVE MESH [COARSER] REFINEMENT LEVEL 2 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-!    LEVEL = 2;  AMR_INDEX = 6; AMR_THRESHOLD = 0.5_rp
-!    call AMR_coarser_loop_on_quadtree_array(first, last, tree)
-!    
-!    ! >>> ADAPTIVE MESH [COARSER] REFINEMENT LEVEL 1 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-!    LEVEL = 3;  AMR_INDEX = 6; AMR_THRESHOLD = 0.3_rp    
-!    call AMR_coarser_loop_on_quadtree_array(first, last, tree)
+    ! >>> ADAPTIVE MESH [COARSER] REFINEMENT LEVEL 2 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    LEVEL = 2;  AMR_INDEX = 6; AMR_THRESHOLD = 0.5_rp
+    call AMR_coarser_loop_on_quadtree_array(first, last, tree)
+    
+    ! >>> ADAPTIVE MESH [COARSER] REFINEMENT LEVEL 1 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    LEVEL = 1;  AMR_INDEX = 6; AMR_THRESHOLD = 0.3_rp    
+    call AMR_coarser_loop_on_quadtree_array(first, last, tree)
     
     return
     end subroutine AMR_whole_domain
