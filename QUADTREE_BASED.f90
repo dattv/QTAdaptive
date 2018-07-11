@@ -4,13 +4,20 @@
 !  QUADTREE_BASED - Entry point of console application.
 !
 
-!****************************************************************************
+!*************************************************************************************************
 !
 !  PROGRAM: QUADTREE_BASED
 !
 !  PURPOSE:  Entry point for the console application.
 !
-!****************************************************************************
+!*************************************************************************************************
+!=================================================================================================
+!> CARTESIAN QUADTREE ADAPTIVE MESH REFINEMENT LIBRARY
+!> AUTHOR: VAN-DAT THANG
+!> E-MAIL: datthangva@gmail.com
+!> E-MAIL: vandatthang@gamil.com
+!> SOURCE CODE LINK: https://github.com/dattv/QTAdaptive
+!=================================================================================================     
 
     program QUADTREE_BASED
 
