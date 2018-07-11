@@ -17,7 +17,7 @@ MODULE MODULE_CONSTANTS
                 half
     
     public  :: MPI
-    public   :: UNDERFINED_VALUE
+    public  :: UNDERFINED_VALUE
     
     real(rp), parameter :: zero = 0._rp, &
                             one = 1._rp, &
