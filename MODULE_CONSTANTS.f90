@@ -34,6 +34,7 @@ MODULE MODULE_CONSTANTS
     
     public  :: MPI
     public  :: UNDERFINED_VALUE
+    public  :: tolerance
     
     real(rp), parameter :: zero = 0._rp         , &
                             one = 1._rp         , &
@@ -57,6 +58,8 @@ MODULE MODULE_CONSTANTS
                one_twentyfourth = 1.0_rp/24.0_rp
     
     real(rp), parameter     ::              MPI = four*atan(one)
-    integer(ip), parameter  :: UNDERFINED_VALUE = -9999   
+    integer(ip), parameter  :: UNDERFINED_VALUE = -9999
+    
+    real(rp), parameter     ::        tolerance = 1.e-8_rp
     
 END MODULE MODULE_CONSTANTS    
