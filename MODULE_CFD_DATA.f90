@@ -25,6 +25,7 @@
         	real(rp), dimension(:), allocatable :: u_new    ! conservative variables
         	real(rp), dimension(:), allocatable :: res      ! residual
         	real(rp)                            :: wsn      ! wave speed
+            real(rp)                            :: dt
             
             ! ===> reconstruction data <=====================================
             type(reconstruction_data), dimension(:), allocatable    :: recons

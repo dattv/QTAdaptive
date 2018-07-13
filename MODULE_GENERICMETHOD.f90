@@ -22,6 +22,7 @@ MODULE MODULE_GENERICMETHOD
             type(quadtree), pointer, intent(inout)  :: work
         end subroutine workFunction
     end interface
+    
     integer(ip) :: i        
     
     do i = first, last, 1
@@ -55,4 +56,54 @@ MODULE MODULE_GENERICMETHOD
     end if
     
     end subroutine loop_on_quadtree_single_level
+!==================================================================================================
+    function func_loop_on_quadtree_array(first, last, tree, workFunction) result(res)
+    implicit none
+    integer(ip), intent(in) :: first, last
+    type(quadtree), dimension(:), intent(inout), target :: tree
+    real(rp)                                            :: res
+    
+    interface   
+        function workFunction(work) result(res)
+            use MODULE_QUADTREE
+            type(quadtree), pointer, intent(inout)  :: work
+            real(rp)                                :: res
+        end function workFunction
+    end interface
+    
+    integer(ip) :: i        
+    
+    do i = first, last, 1
+        res = func_loop_on_quadtree_single_level(tree(i), workFunction)        
+    end do
+    
+    return
+    end function func_loop_on_quadtree_array 
+!==================================================================================================    
+    recursive function func_loop_on_quadtree_single_level(tree, workFunction) result(res)
+    implicit none
+    type(quadTree), intent(inout), target   :: tree
+    real(rp)                                :: res
+    
+    interface   
+        function workFunction(work) result(res)
+            use MODULE_QUADTREE
+            type(quadtree), pointer, intent(inout)  :: work
+            real(rp)                                :: res
+        end function workFunction
+    end interface
+    
+    type(quadTree), pointer :: work
+    
+    if (.not. tree%is_leaf) then 
+        res = func_loop_on_quadtree_single_level(tree%north_west, workFunction)        
+        res = func_loop_on_quadtree_single_level(tree%north_east, workFunction)        
+        res = func_loop_on_quadtree_single_level(tree%south_east, workFunction)        
+        res = func_loop_on_quadtree_single_level(tree%south_west, workFunction)        
+    else
+        work => tree
+        res = workFunction(work)
+    end if
+    
+    end function func_loop_on_quadtree_single_level    
 END MODULE MODULE_GENERICMETHOD    
