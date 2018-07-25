@@ -11,10 +11,7 @@
         use MODULE_CONSTANTS
         
         type :: reconstruction_data
-        	real(rp)    :: x_l
-        	real(rp)    :: x_r
-        	real(rp)    :: y_l
-        	real(rp)    :: y_r
+        	real(rp), dimension(4)    :: x_r
         end type reconstruction_data
         
         type :: cfd_data
@@ -120,11 +117,11 @@
     this%u_new = zero
     this%res   = zero
     this%wsn   = zero
-    
-    this%recons%x_l = zero   
-    this%recons%x_r = zero   
-    this%recons%y_l = zero   
-    this%recons%y_r = zero   
+     
+    this%recons%x_r(1) = zero    
+    this%recons%x_r(2) = zero    
+    this%recons%x_r(3) = zero    
+    this%recons%x_r(4) = zero    
     return
     end subroutine new_cfd_data
 !================================================================================================= 
@@ -158,10 +155,10 @@
     out_cfd_data%res    = in_cfd_data%res      ! residual
     out_cfd_data%wsn    = in_cfd_data%wsn      ! wave speed
     
-    out_cfd_data%recons%x_l = in_cfd_data%recons%x_l
-    out_cfd_data%recons%x_r = in_cfd_data%recons%x_r
-    out_cfd_data%recons%y_l = in_cfd_data%recons%y_l
-    out_cfd_data%recons%y_r = in_cfd_data%recons%y_r
+    out_cfd_data%recons%x_r(1) = in_cfd_data%recons%x_r(1)
+    out_cfd_data%recons%x_r(2) = in_cfd_data%recons%x_r(2)
+    out_cfd_data%recons%x_r(3) = in_cfd_data%recons%x_r(3)
+    out_cfd_data%recons%x_r(4) = in_cfd_data%recons%x_r(4)
     return
     end subroutine  asign_cfd
 !=================================================================================================  
@@ -173,7 +170,7 @@
     
     call res%new(in_cfd_data%NQ)
     
-    res%NQ     = in_cfd_data%NQ       ! total equations
+    res%NQ     = in_cfd_data%NQ ! total equations
     
     res%u      = this%u     + in_cfd_data%u        ! conservative variables
     res%w      = this%w     + in_cfd_data%w        ! primative variables
@@ -182,11 +179,11 @@
     res%res    = this%res   + in_cfd_data%res      ! residual
     res%wsn    = this%wsn   + in_cfd_data%wsn      ! wave speed
     
-    res%recons%x_l = this%recons%x_l + in_cfd_data%recons%x_l
-    res%recons%x_r = this%recons%x_r + in_cfd_data%recons%x_r
-    res%recons%y_l = this%recons%y_l + in_cfd_data%recons%y_l
-    res%recons%y_r = this%recons%y_r + in_cfd_data%recons%y_r
-    
+    res%recons%x_r(1) = this%recons%x_r(1) + in_cfd_data%recons%x_r(1)
+    res%recons%x_r(2) = this%recons%x_r(2) + in_cfd_data%recons%x_r(2)
+    res%recons%x_r(3) = this%recons%x_r(3) + in_cfd_data%recons%x_r(3)
+    res%recons%x_r(4) = this%recons%x_r(4) + in_cfd_data%recons%x_r(4)
+
     return
     end function add_cfd_data
 !=================================================================================================  
